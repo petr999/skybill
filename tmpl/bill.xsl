@@ -34,7 +34,7 @@
 		</td>
 	</tr>
 </table>
-<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Peter Vereshagin</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>. <a href='http://skybill.sf.net'>Skybill</a> is a free software</div>
+<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Peter Vereshagin</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> is a free open source software distributed under the terms of <a href='http://www.opensource.org/licenses/bsd-license.php'>BSD License</a></div>
 </body></html>
 </xsl:template>
 <xsl:template match='yesterday'>
