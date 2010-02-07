@@ -1,0 +1,78 @@
+#!/usr/bin/perl -w
+package Skybill::Config;
+
+use strict;
+use warnings;
+
+use base qw/Exporter/;
+
+
+our @EXPORT=qw/
+DB_USER DB_PASS DB_SOCK DB_NAME 
+DB_RAW_TABLE DB_DAILY_TABLE DB_CLIENTS_TABLE DB_SERVERS_TABLE DB_DETAILS_TABLE
+DB_DETAILS_MONTHLY_TABLE DB_CLISERV_SUMMARY_TABLE DB_CLISERV_SUMMARY_DETAILS_TABLE DB_DESTSRC_SUMMARY_TABLE
+DB_RAW_KEEP
+                                   
+DB_CLISERV_PERIOD DB_CLISERV_KEEP DB_DETAILS_KEEP DB_DETAILS_MONTHLY_KEEP
+                                   
+SERVERS_PORTEXCLUDE_LIST SERVERS_LIST
+
+DB_RAW_SQUID_TABLE
+RATES_AMOUNT
+NOTIFY_THRESHOLD_PERCENTS TRAFFIC_MAINTAINER SMTPHOST MONTHLY_SRC_EXPIRE_BYTES_THRESHOLD MONTHLY_SRC_EXPIRE_MONTHS_THRESHOLD
+
+BILLED_INTERFACE IF_ADDRESS_NUMBER
+
+/;
+
+use Cwd qw/realpath getcwd/;
+
+sub read_addresses{
+	open( ADDRESSES , '<'.realpath( "$main::skybill_lib/../var" )."/addresses.txt" ) or die $!;
+	my @retval = ();
+	while( <ADDRESSES> ){
+		chomp;
+		push @retval, $_;
+	}
+	return \@retval;
+	close ADDRESSES;
+}
+
+use constant DB_USER => 'database_user_name';			# MySQL user name
+use constant DB_PASS => 'database_pass_word';			# MySQL user pass
+use constant DB_SOCK => 'database_sock_ette';	# MySQL binded UNIX datagram socket
+use constant DB_NAME => 'database_name';		# MySQL database
+use constant DB_RAW_TABLE => 'raw';		# MySQL table for raw data
+use constant DB_DAILY_TABLE => 'daily';		# MySQL table for overall daily acct
+use constant DB_CLIENTS_TABLE => 'clients';	# MySQL table for clients acct
+use constant DB_SERVERS_TABLE => 'servers';	# MySQL table for servers acct
+use constant DB_DETAILS_TABLE => 'details_daily';	# MySQL table for servers acct
+use constant DB_DETAILS_MONTHLY_TABLE => 'details_monthly';	# MySQL table for servers acct
+use constant DB_CLISERV_SUMMARY_TABLE => 'cliserv_summary';	# MySQL table for clients and servers daily plain acct
+use constant DB_CLISERV_SUMMARY_DETAILS_TABLE => 'cliserv_summary_details';	# MySQL table for clients and servers daily ratings
+use constant DB_DESTSRC_SUMMARY_TABLE => 'destsrc_monthly';	# MySQL table for clients and servers monthly ratings
+use constant DB_RAW_KEEP => 36*3600;		 # timeout purging raw data
+#2*2
+use constant DB_CLISERV_PERIOD => 900;		# term for clients/servers acct update
+use constant DB_CLISERV_KEEP => 24*86400;	# timeout purging clients/servers acct
+use constant DB_DETAILS_KEEP => 365;			# timeout purging daily details ( days )
+use constant DB_DETAILS_MONTHLY_KEEP => 12;			# timeout purging daily details ( months )
+
+my @nst = (); 
+use English;
+unless( $EUID ){ open NETSTAT, "/bin/sh -c '/usr/bin/netstat -naf inet 2>/dev/null' |" or die $!; while( my $str = <NETSTAT> ){ chomp $str; if( $str =~ m/LISTEN$/ and not $str =~ m/127\.0\.0\.1/ ){ $str =~ s/^[^\s]+\s+[^\s]+\s+[^\s]+\s+[^\s]+\.(\d+)\s+.*$/$1/g; push @nst, $str; } } close NETSTAT; }
+use constant SERVERS_PORTEXCLUDE_LIST => \@nst;	# tabu src_ports who are our clients
+
+use constant SERVERS_LIST => read_addresses() ;	# tabu dest who are servers
+
+use constant DB_RAW_SQUID_TABLE => 'raw_squid';
+use constant RATES_AMOUNT => 5;
+use constant NOTIFY_THRESHOLD_PERCENTS => 20;
+use constant TRAFFIC_MAINTAINER => 'mail@host.tld';
+use constant SMTPHOST=>'mail.host.tld';
+use constant MONTHLY_SRC_EXPIRE_BYTES_THRESHOLD=>1024*1024*1024;
+use constant MONTHLY_SRC_EXPIRE_MONTHS_THRESHOLD=>2;
+use constant BILLED_INTERFACE => 'your_inter_face0';
+use constant IF_ADDRESS_NUMBER => 'interface_address_number_from_0';
+
+1;
