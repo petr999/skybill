@@ -34,7 +34,7 @@
 		</td>
 	</tr>
 </table>
-<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Peter Vereshagin</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> is a free open source software distributed under the terms of <a href='http://www.opensource.org/licenses/bsd-license.php'>BSD License</a></div>
+<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Пётр Верещагин</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> <xsl:text disable-output-escaping="yes">&amp;mdash;</xsl:text> это свободное программное обеспечение с открытысм исходным кодом, распространяющееся на условиях <a href='http://www.freebsd.org.ua/doc/ru_RU.KOI8-R/articles/committers-guide/pref-license.html'>лицензии BSD</a></div>
 </body></html>
 </xsl:template>
 <xsl:template match='yesterday'>
