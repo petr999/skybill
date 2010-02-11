@@ -74,5 +74,6 @@ use constant MONTHLY_SRC_EXPIRE_BYTES_THRESHOLD=>1024*1024*1024;
 use constant MONTHLY_SRC_EXPIRE_MONTHS_THRESHOLD=>2;
 use constant BILLED_INTERFACE => 'your_inter_face0';
 use constant IF_ADDRESS_NUMBER => 'interface_address_number_from_0';
+use constant COUNTRY_CODE => ( 'ru' eq lc $ENV{COUNTRY_CODE} ) ? 'ru' : 'en';
 
 1;
