@@ -31,16 +31,16 @@
 <xsl:template match="/">
 <html lang="ru">
 <head>
-<title>Skybill <xsl:text disable-output-escaping="yes">&amp;mdash;</xsl:text> отчёт по трафику</title>
+<title>Skybill <xsl:text disable-output-escaping="yes">&amp;mdash;</xsl:text> traffic report</title>
 <link rel='stylesheet' type='text/css' href='/bill.css?' />
 </head>
 <body>
 <table width='100%' border='0' cellspacing='0' cellpadding='0'>
 	<tr>
 		<td colspan='3' align='center' class='subbody'>
-			Сегодня: <xsl:value-of select='bill/head/@date' />
+			Today: <xsl:value-of select='bill/head/@date' />
 			<br />
-			За месяц: 
+			At month: 
 			<xsl:call-template name='bytes'>
 				<xsl:with-param name='acct' select='bill/head/@monthly-bytes' />
 			</xsl:call-template>
@@ -51,30 +51,30 @@
 	<tr>
 	</tr>
 		<td colspan='3' align='center' class='subbody'>
-			За год:
+			At year:
 			<xsl:call-template name='bytes'>
 				<xsl:with-param name='acct' select='bill/head/@yearly-bytes' />
 			</xsl:call-template>
 			<br />
-			Время составления:
+			Conclusion time:
 			<xsl:value-of select='format-number(bill/@forming-time, "0.##" )' /> сек
 		</td>
 	</tr>
 </table>
-<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Пётр Верещагин</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> <xsl:text disable-output-escaping="yes">&amp;mdash;</xsl:text> это свободное программное обеспечение с открытысм исходным кодом, распространяющееся на условиях <a href='http://www.freebsd.org/doc/ru/articles/committers-guide/pref-license.html'>лицензии BSD</a></div>
+<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Peter Vereshagin</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> <xsl:text disable-output-escaping="yes">&amp;mdash;</xsl:text> is a free open source software distributed under the terms of <a href='http://www.freebsd.org/copyright/freebsd-license.html'>BSD license</a></div>
 </body></html>
 </xsl:template>
 <xsl:template match='yesterday'>
 	<xsl:call-template name='daybar'>
 		<xsl:with-param name='dayname'>
-			Вчера
+			Yesterday
 		</xsl:with-param>
 	</xsl:call-template>
 </xsl:template>
 <xsl:template match='today'>
 	<xsl:call-template name='daybar'>
 		<xsl:with-param name='dayname'>
-			Сегодня 
+			Today 
 		</xsl:with-param>
 	</xsl:call-template>
 </xsl:template>
@@ -102,7 +102,7 @@
 						<table width='100%' border='1' cellspacing='0' cellpadding='0'>
 							<thead>
 								<tr align='center'>
-									<th width='100%'>Исходящие
+									<th width='100%'>Ours-caused
 									</th>
 								</tr>
 							</thead>
@@ -112,9 +112,9 @@
 										<table width='100%' border='0' cellspacing='0' cellpadding='0'>
 											<tr align='center'>
 												<td>
-										Клиентов: <xsl:value-of select='@internal-clients' />
+										Clients: <xsl:value-of select='@internal-clients' />
 										<br />
-										Байт: 
+										Bytes: 
 											<xsl:call-template name='bytes'>
 												<xsl:with-param name='acct'>
 													<xsl:value-of select='@internal-bytes' />
@@ -135,7 +135,7 @@
 											</tr>
 											<tr align='center'>
 												<td>
-													Портов: <xsl:value-of select='@internal-ports' />
+													Ports: <xsl:value-of select='@internal-ports' />
 												</td>
 											</tr>
 											<tr>
@@ -161,7 +161,7 @@
 						<table width='100%' border='1' cellspacing='0' cellpadding='0'>
 							<thead>
 								<tr>
-									<th width='100%'>Входящие
+									<th width='100%'>Theirs-caused
 									</th>
 								</tr>
 							</thead>
@@ -174,9 +174,9 @@
 													<table width='100%' border='0' cellspacing='0' cellpadding='0'>
 														<tr align='center'>
 															<td>
-																Хостов: <xsl:value-of select='@external-clients' />
+																Hosts: <xsl:value-of select='@external-clients' />
 																<br />
-																Байт: 
+																Bytes: 
 																<xsl:call-template name='bytes'>
 																	<xsl:with-param name='acct'>
 																		<xsl:value-of select='@external-bytes' />
@@ -201,7 +201,7 @@
 											</tr>
 											<tr align='center'>
 												<td>
-													Портов: <xsl:value-of select='@external-ports' />
+													Ports: <xsl:value-of select='@external-ports' />
 												</td>
 											</tr>
 											<tr>
@@ -334,11 +334,12 @@
 			<thead>
 				<tr>
 					<th align='center' colspan='4'>
-						По портам
+						By ports
 						<xsl:value-of select='../../query/option[attribute::name="src"]/@value' />
 						<xsl:value-of select='../../query/option[attribute::name="dst"]/@value' />
-						за день 
+						on day
 						<xsl:value-of select='../../head/@d' />
+						:
 					</th>
 				</tr>
 			</thead>
@@ -378,8 +379,9 @@
 			<thead>
 				<tr>
 					<th align='center' colspan='4'>
-						Откуда и куда за день 
+						Froms and Targets on a day
 						<xsl:value-of select='../../head/@d' />
+						:
 					</th>
 				</tr>
 				<tr>
@@ -409,7 +411,7 @@
 							</xsl:for-each>
 						</select>
 						<input type='submit' value='Да' />
-						из 
+						of 
 						<xsl:value-of select='@count'/>
 					</td>
 				</tr>
@@ -461,17 +463,18 @@
 			<thead>
 				<tr>
 					<th align='center' colspan='4'>
-						Источники за день 
+						Sources on day
 						<xsl:value-of select='../../head/@d' />
+						:
 					</th>
 				</tr>
 					<xsl:if test='string-length( @href-nodst ) &gt; 0' >
 					<tr>
 						<td align='center' colspan='2'>
-							Выбран потребитель:
+							Target chosen:
 							<xsl:value-of select='../../query/option[attribute::name="dst"]/@value' />
 							<a href='{@href-nodst}'>
-								смотреть всех
+								See All
 							</a>
 						</td>
 					</tr>
@@ -503,7 +506,7 @@
 							</xsl:for-each>
 						</select>
 						<input type='submit' value='Да' />
-						из 
+						of 
 						<xsl:value-of select='@count'/>
 					</td>
 				</tr>
@@ -550,7 +553,7 @@
 			<thead>
 				<tr>
 					<th align='center' colspan='2'>
-						Потребители за день 
+						Consumers on day
 							<xsl:value-of select='../../head/@d' />
 						:
 					</th>
@@ -558,10 +561,10 @@
 				<xsl:if test='string-length( @href-nosrc ) &gt; 0' >
 					<tr>
 						<td align='center' colspan='2'>
-							Выбран источник:
+							Source chosen:
 							<xsl:value-of select='../../query/option[attribute::name="src"]/@value' />
 							<a href='{@href-nosrc}'>
-								смотреть всех
+								see all
 							</a>
 						</td>
 					</tr>
@@ -594,7 +597,7 @@
 								</xsl:for-each>
 							</select>
 							<input type='submit' value='Да' />
-							из 
+							of 
 							<xsl:value-of select='@count'/>
 						</td>
 					</tr>
@@ -636,7 +639,7 @@
 			<thead>
 				<tr>
 					<th align='center' colspan='2'>
-						Потребители за месяц
+						Consumers at month
 							<xsl:value-of select='../../head/@my' />
 					 	:
 					</th>
@@ -644,10 +647,10 @@
 				<xsl:if test='string-length( @href-nosrc ) &gt; 0' >
 					<tr>
 						<td align='center' colspan='2'>
-							Выбран источник:
+							Source chosen:
 							<xsl:value-of select='../../query/option[attribute::name="src"]/@value' />
 							<a href='{@href-nosrc}'>
-								смотреть всех
+								see all
 							</a>
 						</td>
 					</tr>
@@ -680,7 +683,7 @@
 								</xsl:for-each>
 							</select>
 							<input type='submit' value='Да' />
-							из 
+							of 
 							<xsl:value-of select='@count'/>
 						</td>
 					</tr>
@@ -722,17 +725,18 @@
 			<thead>
 				<tr>
 					<th align='center' colspan='2'>
-						Источники трафика за месяц 
+						Sources at month
 						<xsl:value-of select='../../head/@my' />
+						:
 					</th>
 				</tr>
 				<xsl:if test='string-length( @href-nodst ) &gt; 0' > 
 					<tr>
 						<td align='center' colspan='2'>
-							Выбран потребитель:
+							Consumer chosen:
 							<xsl:value-of select='../../query/option[attribute::name="dst"]/@value' />
 							<a href='{@href-nodst}'>
-								смотреть всех
+								see all
 							</a>
 						</td>
 					</tr>
@@ -741,7 +745,7 @@
 					<td align='center' colspan='2'>
 						<xsl:for-each select='../../query/option'>
 							<xsl:if test='@name != "p" and @name != "q"'>
-								<inpu type='hidden' name='{@name}' value='{@value}' />
+								<input type='hidden' name='{@name}' value='{@value}' />
 							</xsl:if>
 						</xsl:for-each>
 						<input type='hidden' name='q' value='sm' />
@@ -765,7 +769,7 @@
 							</xsl:for-each>
 						</select>
 						<input type='submit' value='Да' />
-						из 
+						of 
 						<xsl:value-of select='@count'/>
 					</td>
 				</tr>
@@ -810,16 +814,16 @@
 		<thead>
 			<tr>
 				<th align='center' colspan='2'>
-					Трафик по дням:
+					Traffic by days:
 				</th>
 			</tr>
 			<xsl:if test='string-length( @href-nodst ) &gt; 0' >
 				<tr>
 					<td align='center' colspan='2'>
-						Выбран потребитель:
+						Consumer chosen:
 						<xsl:value-of select='../../query/option[attribute::name="dst"]/@value' />
 						<a href='{@href-nodst}'>
-							смотреть всех
+							see all
 						</a>
 					</td>
 				</tr>
@@ -827,10 +831,10 @@
 			<xsl:if test='string-length( @href-nosrc ) &gt; 0' >
 				<tr>
 					<td align='center' colspan='2'>
-						Выбран источник:
+						Source chosen:
 						<xsl:value-of select='../../query/option[attribute::name="src"]/@value' />
 						<a href='{@href-nosrc}'>
-							смотреть всех
+							see all
 						</a>
 					</td>
 				</tr>
@@ -868,16 +872,16 @@
 		<thead>
 			<tr>
 				<th align='center' colspan='2'>
-					Трафик по месяцам:
+					Traffic by months:
 				</th>
 			</tr>
 			<xsl:if test='string-length( @href-nodst ) &gt; 0' > 
 				<tr>
 					<td align='center' colspan='2'>
-						Выбран потребитель:
+						Consumer chosen:
 						<xsl:value-of select='../../query/option[attribute::name="dst"]/@value' />
 						<a href='{@href-nodst}'>
-							смотреть всех
+							see all
 						</a>
 					</td>
 				</tr>
@@ -885,10 +889,10 @@
 			<xsl:if test='string-length( @href-nosrc ) &gt; 0' > 
 				<tr>
 					<td align='center' colspan='2'>
-						Выбран источник:
+						Source chosen:
 						<xsl:value-of select='../../query/option[attribute::name="src"]/@value' />
 						<a href='{@href-nosrc}'>
-							смотреть всех
+							see all
 						</a>
 					</td>
 				</tr>
