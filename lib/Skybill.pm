@@ -52,7 +52,6 @@ use Validate::Net;
 
 use Storable qw( store retrieve ); # used to save/restore the internal data
 use LockFile::Simple qw( lock unlock ); # used to lock the data file
-use Algorithm::FloodControl;
 
 use Cwd qw/realpath getcwd/;
 
@@ -99,36 +98,30 @@ my $parser = XML::LibXML->new();
 my $xslt = XML::LibXSLT->new();
 
 my( $month_condition, $year_condition, $day_condition, $src_condition, $dst_condition ) = map { '' } (0..4);
-my $xsl_path = realpath( "$main::skybill_lib/../tmpl" );
+
+sub new{
+	my $class = shift;
+	my $country_code = country_code();
+	my $xsl_path = realpath( "$main::skybill_lib/../tmpl/$country_code" );
+	my $hash = { xsl_path => $xsl_path,
+	};
+	bless $hash, $class;
+}
 
 sub page{ 
 	print CGI->header( -charset => 'utf-8' );
-  my $flood_file = '/tmp/cgi.lock';
-  lock( $flood_file );                                   # lock the storage
-  my $FLOOD = retrieve( $flood_file ) if -r $flood_file; # read storage data
-  flood_storage( $FLOOD ) if $FLOOD;                     # load storage
-  my $wait = flood_check( 5, 60, 'CGI BILL' );     # check for flood
-  store( flood_storage(), $flood_file );                 # save storage data
-  unlock( $flood_file );                                 # unlock the file
-  
-  if( $wait )
-    {
-  		print "Please wait $wait seconds before requesting this page again.\n";
-  		exit;
-    }
-  
-  
-  	my $q=new CGI;
-  	$query=$q->Vars;
-  	filter_query( $query );
-		$dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";mysql_socket=".DB_SOCK,DB_USER,DB_PASS);
-  	my $bill=get_bill( $query );
-  	$dbh->disconnect();
+  my $q=new CGI;
+  $query=$q->Vars;
+  filter_query( $query );
+	$dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";mysql_socket=".DB_SOCK,DB_USER,DB_PASS);
+  my $bill=get_bill( $query );
+  $dbh->disconnect();
 
   if( $bill == 0 ){
   	say_err();
   } else {
-  	say_bill( $bill );
+		my $self=__PACKAGE__->new;
+  	$self->say_bill( $bill );
   }
 }
 
@@ -694,8 +687,9 @@ sub get_bill_head{
 
 sub _get_xslt_sheet{
 	my $fn = shift;
-  my $style_doc = $parser->parse_file(  $fn );
-  my $stylesheet = $xslt->parse_stylesheet($style_doc);
+  my $stylesheet = $xslt->parse_stylesheet_file( $fn );
+	die unless defined $stylesheet;
+	return $stylesheet;
 }
 
 sub get_xslt_sheet{
@@ -707,17 +701,9 @@ sub get_xslt_sheet{
 	}
 }
 
-sub say_err{
-         my $source = $parser->parse_file( "$xsl_path/data.xml");
-         my $style_doc = $parser->parse_file( "$xsl_path/style.xsl");
-         my $stylesheet = $xslt->parse_stylesheet($style_doc);
-         my $results = $stylesheet->transform($source);
-				 $results->setEncoding( 'UTF-8' );
-         $stylesheet->output_fh($results, \*STDOUT );
-}
-
 sub say_bill{
-        my $source = shift;
+        my( $self, $source ) = @_ ;
+				my $xsl_path = $self->{ xsl_path };
         my $stylesheet = get_xslt_sheet( "$xsl_path/bill.xsl" );
         my $results = $stylesheet->transform($source);
         #$stylesheet->output_fh( $results, \*STDOUT ) or die $!;
@@ -771,6 +757,10 @@ sub href_chart{
 	}
 	chop $qs;
 	( defined( $ENV{SCRIPT_NAME} ) ? $ENV{SCRIPT_NAME} : '/' ).$qs;
+}
+
+sub country_code{
+	return( ( defined $ENV{COUNTRY_CODE} ) and  ( 'ru' eq lc $ENV{COUNTRY_CODE} ) ) ? 'ru' : 'en';
 }
 
 1;
