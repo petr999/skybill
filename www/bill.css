@@ -1,0 +1,6 @@
+div td p { width: 100%;
+				}
+*	  { font-family: Tahoma, Arial, Arial Cyr, Helvetica, Helv, serif;
+    font-size:  12px;
+	}
+html body { width: expression((documentElement.clientWidth) < 1000 ? "1000px" : "100%"); }
