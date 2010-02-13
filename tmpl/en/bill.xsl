@@ -410,7 +410,7 @@
 								</xsl:choose>
 							</xsl:for-each>
 						</select>
-						<input type='submit' value='Да' />
+						<input type='submit' value='Yes' />
 						of 
 						<xsl:value-of select='@count'/>
 					</td>
@@ -505,7 +505,7 @@
 								</xsl:choose>
 							</xsl:for-each>
 						</select>
-						<input type='submit' value='Да' />
+						<input type='submit' value='Yes' />
 						of 
 						<xsl:value-of select='@count'/>
 					</td>
@@ -596,7 +596,7 @@
 									</xsl:choose>
 								</xsl:for-each>
 							</select>
-							<input type='submit' value='Да' />
+							<input type='submit' value='Yes' />
 							of 
 							<xsl:value-of select='@count'/>
 						</td>
@@ -682,7 +682,7 @@
 									</xsl:choose>
 								</xsl:for-each>
 							</select>
-							<input type='submit' value='Да' />
+							<input type='submit' value='Yes' />
 							of 
 							<xsl:value-of select='@count'/>
 						</td>
@@ -768,7 +768,7 @@
 								</xsl:choose>
 							</xsl:for-each>
 						</select>
-						<input type='submit' value='Да' />
+						<input type='submit' value='Yes' />
 						of 
 						<xsl:value-of select='@count'/>
 					</td>
