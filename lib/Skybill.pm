@@ -86,9 +86,13 @@ use constant Q_REGEXES=>{ 'p'		=>'\d+',
 	};
 
 
-setlocale( LC_COLLATE, 'ru_RU.UTF-8' );
-setlocale( LC_CTYPE, 'ru_RU.UTF-8' );
-setlocale( LC_TIME, 'ru_RU.UTF-8' );
+my $locale = ( 'ru' eq lc $ENV{ COUNTRY_CODE } )
+	? 'ru_RU.UTF-8'
+	: 'en_US.UTF-8'
+;
+setlocale( LC_COLLATE, 	$locale );
+setlocale( LC_CTYPE, 		$locale );
+setlocale( LC_TIME, 		$locale );
 use locale;
 
 my $dbh = undef;
