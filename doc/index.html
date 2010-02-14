@@ -5,10 +5,11 @@
 <body>
 <h1 align='center'>Skybill, your traffic counting</h1>
 <p>Here comes the set of perl programs, most of them are plain Perl scripts to take information about traffic and put them into the database appropriately. The rest is a CGI ( <a href='http://fcgi-spawn.sf.net'>FastCGI</a> compatible ) program to show the results to the user.</p>
-<p>The CGI output is show on the <a href='http://skybill.vereshagin.org'>Skybill demo</a> page. That site is very &laquo;social&raquo; because the Skybill analyses the web server's access log there: it counts every visitor and shows his/her/its IP address to everyone, so in respect of your privacy I warn you about that before you click. There's a latency on traffic analisys so you should wait some minutes before you notice your IP address on that page as you may expect as a result.</p>
+<p>The CGI output is shown on the <a href='http://skybill.vereshagin.org'>Skybill demo</a> page. That site is very &laquo;social&raquo; because the Skybill analyses the web server's access log there: it counts every visitor and shows his/her/its IP address to everyone, so in respect of your privacy I warn you about that before you click. There's a latency on traffic analisys so you should wait some minutes before you notice your IP address on that page as you may expect as a result.</p>
 <p>Hardware requirements of the Skybill are very low: it passed several GB of traffic per day running via Pentium1 machine for years. Needless to say, the application tasks like web caching proxy and e-mail daemons did the load there among with Skybill, too.</p>
+<p>Software is about to be <a href='http://sourceforge.net/projects/skybill/files/latest'>downloaded from SourceForge</a> or obtained via Git repositories ( see 'References' below ) as a work in process.</p>
 <h2 align='center'>The purpose</h2>
-<p>Originally, the software was intended for counting the traffic which was very expensive ( $0.1 per 1 MByte of data, no matter in or out ) because George Soross had underdeveloped the Internet in Russia (joke). It was a small LAN of an enterprise that was unsatisfied with every existing software to the date. This way, it was about to control the ISP statistics and local users' Internet consumption and was released as a v0.1</p>
+<p>Originally, the software was intended for counting the traffic which was very expensive ( $0.1 per 1 MByte of data, no matter in or out ) because George Soross had underdeveloped the Internet in Russia (joke). It was a small LAN of an enterprise that was unsatisfied with every existing software to the date. This way, it was about to control the ISP statistics and local users' Internet consumption and was released as a v0.1 .</p>
 <p>Some unexpected usage of the Skybill was found when the email viruses came on the scenes. Those were the times when we had news on the feeds like this one: &laquo;Spammers' software got skills to send itself via the particular deployment's ISP's relay&raquo;. It was obvious to look at the who is the most active sender on the port 25/tcp ( smtp ) to know what exactly workstation should be cured.</p>
 <p>Clocks changed and things too, but people not.</p>
 <p>Traffic was unchained for everyone with bandwidth limited only, so here we go about to know for every particular Internet user and server to know about the Internet connection's use by the case. Isn't it a next voluntary botnet like the Skype that use your paid full bandwidth without any excuse? How far it comes about your dedicated server's traffic? All of those things still cost money and here is how you can be more smart about those exepnses. Not to mention the additional care about your system's health.</p>
@@ -68,11 +69,11 @@ One may notice things like Net::Interface on a Config.pm. This is to adopt to th
 </p>
 <p>Config.pm variables are mostly self-explanatory; typically you can grep the sources to know the what are they all about.</p>
 <p>To know that everything is correct, you should calculate a daily bytes sum for each stage of data flow process. It should be all the same. If for some day it is different thus something is wrong on sql statements.</p>
-<h3>More on geolocation</h3>
+<h3 align='center'>More on geolocation</h3>
 <p>Skybill's CGI ( FCGI::Spawn-compatible ) frontend detects language detection based on the geolocation.</p>
 <p>The common practice for country location is application-based. This is not the case for the Skybill: it use the COUNTRY_CODE environment variable to choose the appropriate xsl template. Such a variable is obvious to be set by the web server itself ( like the fastcgi_param on the Nginx.conf ) and is my proposal as a convinient standard way to pass the geo data from web server to the application.</p>
 <p>There are lots of such a geolocation data sources including free ones, to be used for your web server. You may change the CGI program anyway if you should prefer old way: to take geo data from your database in an application.</p>
-<h2>References</h2>
+<h2 align='center'>References</h2>
 Project's Git repository is at <a href='http://github.com/petr999/skybill'>GitHub</a> and the <a href=''>latest development version</a> is available via SourceForge's Git <a href='http://skybill.git.sourceforge.net/git/gitweb-index.cgi'>repository</a>, too.
 <h2 align='center'>Acknowledgements</h2>
 <p>Thanks to: Skyriver Studios for test case and Roman Palagin for ipacctd.</p>
