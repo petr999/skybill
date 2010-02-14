@@ -31,6 +31,7 @@
 <p>It is highly necessary that data to be processed sequentially from raw to clients and servers data before the next such a process is launched again so it is where you must find a balance between data collection speed and data integrity. I find it useful to launch cliserv script every few minutes, but YMMV.</p>
 <p>It worths to note that besides unmentioning about the unneeded port number on the clients and servers data, the timestamp field shows the last time when the particular client was using the particular server. So it may be useful as a source for the various daytime charts about particular clients and servers utilization.</p>
 <p>After the clients and servers tables are fullfilled, the data are aggregated into the details_daily table with no sense about ports numbers, i. e. about relationship between the particular hosts. This was useful for LAN routing/NAT service users monitoring but still helps for one host only.</p>
+<p>The details_monthly has almost the same prupose as the details_daily, except that it keeps data about every particular IP addresses one per a row and keeps the data summarized for the whole months. The src/dest field is an information about the particular data flow direction.</p>
 <p>As for cliserv_summary: it is an optional data to make the shoulders on a demo &laquo;t-shirt&raquo; layout for a quick reference on what's up. It is highly advised to enhance this feature to suit your particular needs.</p>
 <p>The 'daily' table contains the data about the daily traffic amount and is updated every minute.</p>
 <h2 align='center'>FCGI::Spawn</h2>
@@ -58,7 +59,7 @@ One may notice things like Net::Interface on a Config.pm. This is to adopt to th
 <li>_10min.sh, edited same way, executed several times less frequently than the _min;
 	<ul>This includes:
 	<li>cliserv to aggregate daily traffic as a client- or server-originated, keeping its last appearance time of day;</li>
-	<li>details to aggregate daily traffic at a source-to destination IP address;</li>
+	<li>details to aggregate daily traffic at a source-to destination IP address, and monthly traffic per every IP address and flow direction;</li>
 	<li>cliserv_summary and probably more to make the shoulders on a CGI's &laquo;t-shirt&raquo;.</li>
 	</ul>
 </li>
@@ -66,6 +67,12 @@ One may notice things like Net::Interface on a Config.pm. This is to adopt to th
 </ul>
 </p>
 <p>Config.pm variables are mostly self-explanatory; typically you can grep the sources to know the what are they all about.</p>
+<h3>More on geolocation</h3>
+<p>Skybill's CGI frontend detects language detection based on the geolocation.</p>
+<p>The common practice for country location is application-based. This is not the case for the Skybill: it use the COUNTRY_CODE environment variable to choose the appropriate xsl template. Such a variable is obvious to be set by the web server itself ( like the fastcgi_param on the Nginx.conf ) and is my proposal as a convinient standard way to pass the geo data from web server to the application.</p>
+<p>There are lots of such a geolocation data sources including free ones, to be used for your web server. You may change the CGI program anyway if you should prefer old way: to take geo data from your database in an application.</p>
+<h2>Resources</h2>
+Project's Git repository is at <a href='http://github.com/petr999/skybill'>GitHub</a> and the <a href=''>latest development version</a> is available via SourceForge's Git <a href='http://skybill.git.sourceforge.net/git/gitweb-index.cgi'>repository</a>, too.
 <h2 align='center'>Acknowledgements</h2>
 <p>Thanks to: Skyriver Studios for test case and Roman Palagin for ipacctd.</p>
 <p>Bugs and TODOs are tracked at Peter Vereshagin's <a href='http://bugs.vereshagin.org/buglist.cgi?query_format=advanced;product=Skybill%20traffic%20accounting%2Fnetwork%20monitoring'>Bugzilla</a>. License is <a href='http://www.freebsd.org/copyright/freebsd-license.html'>BSD</a>.
