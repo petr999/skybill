@@ -67,7 +67,7 @@ One may notice things like Net::Interface on a Config.pm. This is to adopt to th
 </ul>
 </p>
 <p>Config.pm variables are mostly self-explanatory; typically you can grep the sources to know the what are they all about.</p>
-<p>To know that everything is correct, you should calculate a daily bytes sum for each stage of data flow process. It should be all the same. If for some day it is not, the something is wrong on sql statements.</p>
+<p>To know that everything is correct, you should calculate a daily bytes sum for each stage of data flow process. It should be all the same. If for some day it is different thus something is wrong on sql statements.</p>
 <h3>More on geolocation</h3>
 <p>Skybill's CGI ( FCGI::Spawn-compatible ) frontend detects language detection based on the geolocation.</p>
 <p>The common practice for country location is application-based. This is not the case for the Skybill: it use the COUNTRY_CODE environment variable to choose the appropriate xsl template. Such a variable is obvious to be set by the web server itself ( like the fastcgi_param on the Nginx.conf ) and is my proposal as a convinient standard way to pass the geo data from web server to the application.</p>
