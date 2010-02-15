@@ -902,7 +902,7 @@
 			<xsl:for-each select='rate'>
 				<tr>
 					<td width='20%'>
-						<xsl:value-of select='@year' />/<xsl:value-of select='@month' />
+						<xsl:value-of select='@year' />-<xsl:value-of select='@month' />
 					</td>
 					<td width='80%'>
 						<nobr>
