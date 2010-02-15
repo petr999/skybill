@@ -32,7 +32,7 @@
 <html lang="ru">
 <head>
 <title>Skybill <xsl:text disable-output-escaping="yes">&amp;mdash;</xsl:text> отчёт по трафику</title>
-<link rel='stylesheet' type='text/css' href='/bill.css?' />
+<link rel='stylesheet' type='text/css' href='/bill.css' />
 </head>
 <body>
 <table width='100%' border='0' cellspacing='0' cellpadding='0'>

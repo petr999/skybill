@@ -412,7 +412,7 @@ sub get_content{
 	### DAILY BYTES
 	$sql=( defined( $query->{dst} ) or defined( $query->{src} ) )?
 		(
-			"select date_format( day, '%d/%m/%Y' ), sum( bytes ) as acct 
+			"select date_format( day, '%Y-%m-%d' ), sum( bytes ) as acct 
 				from details_daily where day $month_condition".
 					( defined( $dst_condition )?" and dest $dst_condition ":'' ).
 					( defined( $src_condition )?" and src $src_condition ":'' ).
@@ -420,7 +420,7 @@ sub get_content{
 				order by day desc
 			"
 		)
-		:"select date_format( day, '%d/%m/%Y' ), bytes as acct
+		:"select date_format( day, '%Y-%m-%d' ), bytes as acct
 								from daily
 			where day $month_condition order by day desc
 			-- limit 10
@@ -435,7 +435,7 @@ sub get_content{
 		$max_bytes=$bytes if $bytes>$max_bytes;
 		$sibling=Skybill::XML::Element->new('rate');
 		$sibling->setAttribute( 'day', $day );
-		my( $mday, $month, $year )=split '/', $day;
+		my( $mday, $month, $year )=split '-', $day;
 		$sibling->setAttribute( 'bytes', $bytes );
 		$sibling->setAttribute( 'href', href_chart( $query, { my=>"$year-$month", q=>'ds', d=>$mday } ) );
 		$parent->addChild( $sibling );
@@ -468,7 +468,7 @@ sub get_content{
 		$max_bytes=$bytes if $bytes>$max_bytes;
 		$sibling=Skybill::XML::Element->new('rate');
 		$sibling->setAttribute( 'year', $year );
-		$sibling->setAttribute( 'month', $month );
+		$sibling->setAttribute( 'month', sprintf '%02d', $month );
 		$sibling->setAttribute( 'bytes', $bytes );
 		$sibling->setAttribute( 'href', href_chart( $query, { my=>"$year-$month", q=>'ms',  d=>'' } ) );
 		$parent->addChild( $sibling );
@@ -679,13 +679,13 @@ sub get_bill_head{
 	$sth->execute;
 	( $bytes )=$sth->fetchrow_array;
 	$node->setAttribute( 'yearly-bytes', $bytes );
-	$node->setAttribute( 'date', strftime '%A, %d %B %Y', localtime );
+	$node->setAttribute( 'date', strftime( ( 'ru_RU.UTF-8' eq $locale )?'%A, %d %B %Y':'%A, %B %d, %Y', localtime ) );
 	$node->setAttribute( 'contents_amount', CONTENTS_AMOUNT );
 	my $seldate;
 	my( $year, $month )=split '-', $query->{my} if defined $query->{my};
 	my $day=$query->{d} if defined $query->{d};
-	$node->setAttribute( 'my', "$month/$year" ) if defined( $month ) and defined( $year );
-	$node->setAttribute( 'd', "$day/$month/$year" ) if defined( $month ) and defined( $year ) and defined( $day );
+	$node->setAttribute( 'my', "$year-$month" ) if defined( $month ) and defined( $year );
+	$node->setAttribute( 'd', "$year-$day-$month" ) if defined( $month ) and defined( $year ) and defined( $day );
 	return $node;
 }
 

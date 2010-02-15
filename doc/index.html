@@ -46,7 +46,7 @@
 <h2 align='center'>Installation</h2>
 <h3 align='center'>Prerequisites</h3>
 <p>First of all, you must decide on how you will get network statistics. If this is the aggregated packets statistics like netflow or ipacctd, then you may use the ipacct2mysql script. If this is something like the squid2mysql that puts each and every request on the sql table, it is obvious that you should write a script to make the statistics aggregated no more frequently than per every second. This is done by executing SQL clause like 'INSERT INTO raw SELECT ... from raw_squid GROUP BY ts' and DELETE'ing the all of the have-just-INSERT'ed data from that constraintless table. This is to be included into the 'every minute' chain of scripts, something like the ipacct_min.sh.</p>
-<p>There is no any special need for the software, despite the dependencies list is long, all of them should be met in your system. Minimal software versions are: perl-5.6, mysql-4.0. Necessary perl modules are: DBI, CGI (although FCGI::Spawn with its CGI.pm.patch is highly recommended ) and XML::LibXSLT which is needed for a web interface only.<br />
+<p>There is no any special need for the software, despite the dependencies list is long, all of them should be met in your system. Minimal software versions are: perl-5.6, mysql-4.0+ ( 4.1+ as of v0.2 ). Necessary perl modules are: DBI ( and DBD::mysql ), CGI (although FCGI::Spawn with its CGI.pm.patch is highly recommended ) and XML::LibXSLT which is needed for a web interface only.<br />
 One may notice things like Net::Interface on a Config.pm. This is to adopt to the always changing network conditions and may not be the case for you. Another thing to pay attention to is: shell scripts tweak, at least the BIN_PREFIX path.</p>
 <h3 align='center'>The rest</h3>
 <p>Cron scripts are these ( 'ipacct_' prefix is typically assumed ):
@@ -67,7 +67,7 @@ One may notice things like Net::Interface on a Config.pm. This is to adopt to th
 <li>_everyday, to wipe old daily statistics, to be executed daily.</li>
 </ul>
 </p>
-<p>Config.pm variables are mostly self-explanatory; typically you can grep the sources to know the what are they all about.</p>
+<p>Config.pm variables are mostly self-explanatory; typically you can grep the sources to know the what are they all about. The necessary things to change after you copy the sample Config.pm.sample to Config.pm are database connection variables.</p>
 <p>To know that everything is correct, you should calculate a daily bytes sum for each stage of data flow process. It should be all the same. If for some day it is different thus something is wrong on sql statements.</p>
 <h3 align='center'>More on geolocation</h3>
 <p>Skybill's CGI ( FCGI::Spawn-compatible ) frontend detects language detection based on the geolocation.</p>

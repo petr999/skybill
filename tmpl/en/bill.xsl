@@ -32,7 +32,7 @@
 <html lang="ru">
 <head>
 <title>Skybill <xsl:text disable-output-escaping="yes">&amp;mdash;</xsl:text> traffic report</title>
-<link rel='stylesheet' type='text/css' href='/bill.css?' />
+<link rel='stylesheet' type='text/css' href='/bill.css' />
 </head>
 <body>
 <table width='100%' border='0' cellspacing='0' cellpadding='0'>
@@ -61,7 +61,7 @@
 		</td>
 	</tr>
 </table>
-<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Peter Vereshagin</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> <xsl:text disable-output-escaping="yes">&amp;mdash;</xsl:text> is a free open source software distributed under the terms of <a href='http://www.freebsd.org/copyright/freebsd-license.html'>BSD license</a></div>
+<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Peter Vereshagin</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> is a free open source software distributed under the terms of <a href='http://www.freebsd.org/copyright/freebsd-license.html'>BSD license</a></div>
 </body></html>
 </xsl:template>
 <xsl:template match='yesterday'>
@@ -902,7 +902,7 @@
 			<xsl:for-each select='rate'>
 				<tr>
 					<td width='20%'>
-						<xsl:value-of select='@month' />/<xsl:value-of select='@year' />
+						<xsl:value-of select='@year' />/<xsl:value-of select='@month' />
 					</td>
 					<td width='80%'>
 						<nobr>
