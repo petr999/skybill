@@ -57,7 +57,7 @@
 			</xsl:call-template>
 			<br />
 			Conclusion time:
-			<xsl:value-of select='format-number(bill/@forming-time, "0.##" )' /> сек
+			<xsl:value-of select='format-number(bill/@forming-time, "0.##" )' /> sec
 		</td>
 	</tr>
 </table>

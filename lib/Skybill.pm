@@ -410,9 +410,10 @@ sub get_content{
 		page_chart( $parent, $count );
 	}
 	### DAILY BYTES
+	my $day_format = ( 'ru_RU.UTF-8' eq $locale )? '%d/%m/%Y' : '%Y-%m-%d'
 	$sql=( defined( $query->{dst} ) or defined( $query->{src} ) )?
 		(
-			"select date_format( day, '%Y-%m-%d' ), sum( bytes ) as acct 
+			"select date_format( day, '$day_format' ), sum( bytes ) as acct 
 				from details_daily where day $month_condition".
 					( defined( $dst_condition )?" and dest $dst_condition ":'' ).
 					( defined( $src_condition )?" and src $src_condition ":'' ).
@@ -420,7 +421,7 @@ sub get_content{
 				order by day desc
 			"
 		)
-		:"select date_format( day, '%Y-%m-%d' ), bytes as acct
+		:"select date_format( day, '$day_format' ), bytes as acct
 								from daily
 			where day $month_condition order by day desc
 			-- limit 10
