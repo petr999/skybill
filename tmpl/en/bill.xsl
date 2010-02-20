@@ -61,7 +61,12 @@
 		</td>
 	</tr>
 </table>
-<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Peter Vereshagin</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> is a free open source software distributed under the terms of <a href='http://www.freebsd.org/copyright/freebsd-license.html'>BSD license</a></div>
+<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Peter Vereshagin</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> is a free open source software distributed under the terms of <a href='http://www.freebsd.org/copyright/freebsd-license.html'>BSD license</a>.<br
+/><xsl:choose>
+		<xsl:when test='bill/@fcgi-spawn != 0'>
+			This Skybill works in <a href='http://fcgi-spawn.sf.net'>FCGI::Spawn</a>.
+		</xsl:when>
+	</xsl:choose></div>
 </body></html>
 </xsl:template>
 <xsl:template match='yesterday'>
@@ -924,6 +929,6 @@
 </xsl:template>
 <xsl:template name='whois-url'>
 	<xsl:param name='ip'></xsl:param>
-		http://www.ripe.net/whois?form_type=simple&amp;full_query_string=&amp;searchtext=<xsl:value-of select='$ip'/>&amp;Advanced+search=Advanced+search
+		http://who.is/whois-ip/ip-address/<xsl:value-of select='$ip'/>/
 </xsl:template>
 </xsl:stylesheet>

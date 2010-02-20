@@ -176,6 +176,7 @@ sub get_bill{
 	$sibling=get_bill_head( ) || return 0;
 	$parent->addChild( $sibling );
 	$parent->setAttribute( 'forming-time', time()-$bill_time );
+	$parent->setAttribute( 'fcgi-spawn', defined( $FCGI::Spawn::fcgi )?1:0 );
 	#print $bill->toString(2);
 	return $bill;
 }
@@ -188,7 +189,7 @@ sub get_content{
 	my $bill_time=time();
 	my $q=$query->{q};
 	my $sql;
-	my( $year, $month )=split( '-', $query->{my} ) if grep /^my$/, keys %$query;
+	my( $year, $month )= grep( /^my$/, keys %$query  )?  split( '-', $query->{my} ) : map { strftime $_, localtime;  } qw/%G %m/ ;
 
 	$parent->addChild( $sibling );
 	$sibling=Skybill::XML::Element->new('content');
@@ -410,10 +411,11 @@ sub get_content{
 		page_chart( $parent, $count );
 	}
 	### DAILY BYTES
-	my $day_format = ( 'ru_RU.UTF-8' eq $locale )? '%d/%m/%Y' : '%Y-%m-%d'
+	my $day_format = ( 'ru_RU.UTF-8' eq $locale )? '%d/%m/%Y' : '%Y-%m-%d' ;
 	$sql=( defined( $query->{dst} ) or defined( $query->{src} ) )?
 		(
 			"select date_format( day, '$day_format' ), sum( bytes ) as acct 
+				, unix_timestamp( day )
 				from details_daily where day $month_condition".
 					( defined( $dst_condition )?" and dest $dst_condition ":'' ).
 					( defined( $src_condition )?" and src $src_condition ":'' ).
@@ -422,6 +424,7 @@ sub get_content{
 			"
 		)
 		:"select date_format( day, '$day_format' ), bytes as acct
+				, unix_timestamp( day )
 								from daily
 			where day $month_condition order by day desc
 			-- limit 10
@@ -432,11 +435,11 @@ sub get_content{
 	$content->addChild( $sibling );
 	$parent=$sibling;
 	my $max_bytes=0;
-	while( my( $day, $bytes )=$sth->fetchrow_array() ){
+	while( my( $day, $bytes, $ts )=$sth->fetchrow_array() ){
 		$max_bytes=$bytes if $bytes>$max_bytes;
 		$sibling=Skybill::XML::Element->new('rate');
 		$sibling->setAttribute( 'day', $day );
-		my( $mday, $month, $year )=split '-', $day;
+		$ts = [ localtime $ts ]; my( $mday, $month, $year ) = map{ strftime $_, @$ts;  } qw/%d %m %Y/;
 		$sibling->setAttribute( 'bytes', $bytes );
 		$sibling->setAttribute( 'href', href_chart( $query, { my=>"$year-$month", q=>'ds', d=>$mday } ) );
 		$parent->addChild( $sibling );
@@ -686,7 +689,7 @@ sub get_bill_head{
 	my( $year, $month )=split '-', $query->{my} if defined $query->{my};
 	my $day=$query->{d} if defined $query->{d};
 	$node->setAttribute( 'my', "$year-$month" ) if defined( $month ) and defined( $year );
-	$node->setAttribute( 'd', "$year-$day-$month" ) if defined( $month ) and defined( $year ) and defined( $day );
+	$node->setAttribute( 'd', "$year-$month-$day" ) if defined( $month ) and defined( $year ) and defined( $day );
 	return $node;
 }
 
