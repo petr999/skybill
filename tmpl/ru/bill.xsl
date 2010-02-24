@@ -61,7 +61,7 @@
 		</td>
 	</tr>
 </table>
-<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Пётр Верещагин</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> <xsl:text disable-output-escaping="yes">&amp;mdash;</xsl:text> это свободное программное обеспечение с открытым исходным кодом,<br />распространяющееся на условиях <a href='http://www.freebsd.org/doc/ru/articles/committers-guide/pref-license.html'>лицензии BSD</a><br
+<div align='center'><xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text> <a href="http://vereshagin.org">Пётр Верещагин</a> <xsl:text disable-output-escaping="yes">&amp;</xsl:text>lt;peter@vereshagin.org<xsl:text disable-output-escaping="yes">&amp;gt;</xsl:text>.<br /><a href='http://skybill.sf.net'>Skybill</a> <xsl:text disable-output-escaping="yes">&amp;mdash;</xsl:text> это свободное программное обеспечение с открытым исходным кодом,<br />распространяющееся на условиях <a href='license.html'>лицензии BSD</a><br
 /><xsl:choose>
 		<xsl:when test='bill/@fcgi-spawn != 0'>
 			Этот Skybill работает под управлением <a href='http://fcgi-spawn.sf.net'>FCGI::Spawn</a>.
