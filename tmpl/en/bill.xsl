@@ -341,6 +341,7 @@
 					<th align='center' colspan='4'>
 						By ports
 						<xsl:value-of select='../../query/option[attribute::name="src"]/@value' />
+							-&gt;
 						<xsl:value-of select='../../query/option[attribute::name="dst"]/@value' />
 						on day
 						<xsl:value-of select='../../head/@d' />

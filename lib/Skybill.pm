@@ -315,11 +315,11 @@ sub get_content{
 #		$sth->execute();
 #		my( $count )=$sth->fetchrow_array();
 		$sql="select dest_port, src_port, proto, sum( bytes ) as acct  from raw
-			where ts between date_format( $day_condition, '%Y%m%d' ) and date_format( ( $day_condition +interval 1 day ), '%Y%m%d' )
+			where ts  $day_condition
 				and dest $dst_condition and src $src_condition
 			group by src_port, dest_port, proto order by acct desc
 		";
-		#print "SQL: $sql\n";
+		#	print "SQL: $sql\n";
 		$sth=$dbh->prepare( $sql );
 		$sth->execute() or die $!;
 		while( my( $dest_port, $src_port, $proto,  $bytes ) = $sth->fetchrow_array ){
