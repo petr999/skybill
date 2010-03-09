@@ -654,18 +654,30 @@ sub get_bill_day{
 				$rate->setAttribute( 'href', href_chart( $query, { q=>'ds', src=>$addr, dst=>'', my=>$my, d=>$d } ) );
 		}
 	}
-	@$ar=sort  { $$b[5] <=> $$a[5] } @$ar;
+	@$ar=sort  { $$b[5] <=> $$a[5] } sort { $$b[0] cmp $$a[0] } @$ar;
+	my( $old_rate, $old_port, $old_proto ) = ( '', 0, '', );
 	foreach(@$ar){
 		my( $rate_type, $addr, $proto, $port, $bytes, $port_bytes)= @$_;
-		my $ports_rate=Skybill::XML::Element->new( 'rate' );
-		my ($serv )=getservbyport $port, $proto;
-		$ports_rate->setAttribute( 'port', $port.'/'.$proto.($serv?"($serv)":'') );
-		$ports_rate->setAttribute( 'bytes', $port_bytes );
-		if($rate_type eq 'clients'){
-			$internal_ports_day_sibling->addChild( $ports_rate ) if $port_bytes != 0;
-		} else {
-			$external_ports_day_sibling->addChild( $ports_rate ) if $port_bytes!=0;
+		if( 
+				(
+					$old_rate ne $rate_type
+				) or (
+					( $old_rate eq $rate_type ) and ( $old_port != $port ) and ( $old_proto ne $proto ) 
+				)
+			){
+			my $ports_rate=Skybill::XML::Element->new( 'rate' );
+			my ($serv )=getservbyport $port, $proto;
+			$ports_rate->setAttribute( 'port', $port.'/'.$proto.($serv?"($serv)":'') );
+			$ports_rate->setAttribute( 'bytes', $port_bytes );
+			if(
+					(	$rate_type eq 'clients' )
+				){
+				$internal_ports_day_sibling->addChild( $ports_rate ) if $port_bytes != 0;
+			} else {
+				$external_ports_day_sibling->addChild( $ports_rate ) if $port_bytes!=0;
+			}
 		}
+		( $old_rate, $old_port, $old_proto ) = ( $rate_type, $port, $proto );
 	}
 	$day_node->setAttribute( 'forming-time', time()-$bill_time );
 	return 1;

@@ -55,7 +55,11 @@ our $dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";mysql_socket=".DB_SOCK,DB_
 transactize( "delete from ".DB_CLIENTS_TABLE." where ts>date_format( now(), '%Y/%m/%d')",
 	"insert into ".DB_CLIENTS_TABLE." select max( ts ) as ts_max,
 	dest, src, 
-	if( inet_ntoa( src ) in ( '".(join "','", @{(SERVERS_LIST)})."'  ),
+	if( 
+			(
+				inet_ntoa( src ) in ( '".(join "','", @{(SERVERS_LIST)})."'  )
+				and src_port not in ( ".(join ',', @{(SERVERS_PORTEXCLUDE_LIST)})." )
+			),
 		dest_port, src_port
 	), proto, sum( bytes ) as acct from ".DB_RAW_TABLE." 
 	where ts>date_format( now(), '%Y/%m/%d' ) and
@@ -67,7 +71,9 @@ transactize( "delete from ".DB_CLIENTS_TABLE." where ts>date_format( now(), '%Y/
 		and dest_port not in ( ".(join ',', @{(SERVERS_PORTEXCLUDE_LIST)})." )
 	     )
 	)
-	group by date_format( ts, '%Y/%m/%d' ), dest, src, if( inet_ntoa( src ) in ( '".(join "','", @{(SERVERS_LIST)})."'  ),
+	group by date_format( ts, '%Y/%m/%d' ), dest, src, if( inet_ntoa( src ) in ( '".(join "','", @{(SERVERS_LIST)})."'  )
+									and src_port not in ( ".(join ',', @{(SERVERS_PORTEXCLUDE_LIST)})." )
+								,
                 dest_port, src_port
         ), proto
 	-- on duplicate key update bytes=bytes+bytes
