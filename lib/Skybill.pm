@@ -662,7 +662,9 @@ sub get_bill_day{
 				(
 					$old_rate ne $rate_type
 				) or (
-					( $old_rate eq $rate_type ) and ( $old_port != $port ) and ( $old_proto ne $proto ) 
+					( $old_rate eq $rate_type ) and (
+						( $old_port != $port ) or ( $old_proto ne $proto ) 
+					)
 				)
 			){
 			my $ports_rate=Skybill::XML::Element->new( 'rate' );
