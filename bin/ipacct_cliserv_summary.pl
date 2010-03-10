@@ -103,7 +103,7 @@ $sth=$dbh->prepare( "select	'clients' as rate_type, src_port as port,
 	" );
 $sth->execute();
 my $hpr=$sth->fetchall_hashref('hkey');
-use Data::Dumper; print Dumper $hr, $hpr;
+#	use Data::Dumper; print Dumper $hr, $hpr;
 while( ( my ($addr, $hrow_ref) =each %$hr ) || ( my ( $proto_port, $hrow_ports_ref )=each %$hpr )  ){
 	if(  ( defined( $hrow_ref ) ) && ( my ( $proto_port, $hrow_ports_ref )=each %$hpr ) ){
 		$$hrow_ref{port}=$$hrow_ports_ref{port};
