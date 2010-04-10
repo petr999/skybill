@@ -86,14 +86,17 @@ use constant Q_REGEXES=>{ 'p'		=>'\d+',
 	};
 
 
-my $locale = ( 'ru' eq lc $ENV{ COUNTRY_CODE } )
-	? 'ru_RU.UTF-8'
-	: 'en_US.UTF-8'
-;
-setlocale( LC_COLLATE, 	$locale );
-setlocale( LC_CTYPE, 		$locale );
-setlocale( LC_TIME, 		$locale );
-use locale;
+my $locale;
+sub l10n {
+	$locale = ( 'ru' eq lc $ENV{ COUNTRY_CODE } )
+		? 'ru_RU.UTF-8'
+		: 'en_US.UTF-8'
+	;
+	use locale;
+	setlocale( LC_COLLATE, 	$locale );
+	setlocale( LC_CTYPE, 		$locale );
+	setlocale( LC_TIME, 		$locale );
+}
 
 my $dbh = undef;
 my $query = undef;
@@ -114,6 +117,7 @@ sub new{
 
 sub page{ 
 	print CGI->header( -charset => 'utf-8' );
+	l10n;
   my $q=new CGI;
   $query=$q->Vars;
   filter_query( $query );
@@ -697,7 +701,7 @@ sub get_bill_head{
 	$sth->execute;
 	( $bytes )=$sth->fetchrow_array;
 	$node->setAttribute( 'yearly-bytes', $bytes );
-	$node->setAttribute( 'date', strftime( ( 'ru_RU.UTF-8' eq $locale )?'%A, %d %B %Y':'%A, %B %d, %Y', localtime ) );
+	$node->setAttribute( 'date', strftime( ( 'ru_RU.UTF-8' eq $locale )?'%A, %d %B %Y г.':'%A, %B %d, %Y', localtime ) );
 	$node->setAttribute( 'contents_amount', CONTENTS_AMOUNT );
 	my $seldate;
 	my( $year, $month )=split '-', $query->{my} if defined $query->{my};
