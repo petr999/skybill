@@ -180,7 +180,7 @@ sub get_bill{
 	$sibling=get_bill_head( ) || return 0;
 	$parent->addChild( $sibling );
 	$parent->setAttribute( 'forming-time', time()-$bill_time );
-	$parent->setAttribute( 'fcgi-spawn', defined( $FCGI::Spawn::fcgi )?1:0 );
+	$parent->setAttribute( 'fcgi-spawn', ( 'FCGI::Spawn' eq [caller 3]->[0] )?1:0 );
 	#print $bill->toString(2);
 	return $bill;
 }
