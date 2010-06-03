@@ -116,20 +116,20 @@ sub new{
 }
 
 sub page{ 
-	print CGI->header( -charset => 'utf-8' );
-	l10n;
   my $q=new CGI;
+  print $q->header( -charset => 'utf-8' );
+  l10n;
   $query=$q->Vars;
   filter_query( $query );
-	$dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";mysql_socket=".DB_SOCK,DB_USER,DB_PASS);
+  $dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";mysql_socket=".DB_SOCK,DB_USER,DB_PASS);
   my $bill=get_bill( $query );
   $dbh->disconnect();
-
+ 
   if( $bill == 0 ){
-  	say_err();
+    say_err();
   } else {
-		my $self=__PACKAGE__->new;
-  	$self->say_bill( $bill );
+    my $self=__PACKAGE__->new;
+    $self->say_bill( $bill );
   }
 }
 
