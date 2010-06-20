@@ -714,7 +714,7 @@ sub get_bill_head{
 sub _get_xslt_sheet{
 	my $fn = shift;
   my $stylesheet = $xslt->parse_stylesheet_file( $fn );
-	die unless defined $stylesheet;
+	die $! unless defined $stylesheet;
 	return $stylesheet;
 }
 
