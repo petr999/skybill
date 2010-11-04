@@ -1,22 +1,29 @@
 #!/bin/sh
 
-CHROOT_PATH= #/usr/local/jail/internal
-BIN_PREFIX=/usr/local/jail/internal/var/www/skybill/bin
-CHROOT_CMD=$BIN_PREFIX #/usr/sbin/chroot -u 32765 -g 32765 $CHROOT_PATH $BIN_PREFIX
-IPACCT_MIN_LOG=$BIN_PREFIX/../log/ipacct_min.log
+CHROOT_PATH="/jails/internal"
+IPACCT_CHROOT_PATH="/jails/external"
+BIN_PREFIX="/var/www/ul/skybill/bin"
+CHROOT="/usr/sbin/chroot"
+CHROOT_CMD="$CHROOT $CHROOT_PATH $BIN_PREFIX"
+IPACCT_CHROOT_CMD="$CHROOT $IPACCT_CHROOT_PATH"
+IPACCT_MIN_LOG=$CHROOT_PATH/$BIN_PREFIX/../log/ipacct_min.log
 date >>$IPACCT_MIN_LOG
 min=`date "+%M"`
 TIME_MEASURE="/usr/bin/time -h -ao $IPACCT_MIN_LOG "
+IPACCTCTL="$IPACCT_CHROOT_CMD /usr/local/sbin/ipacctctl"
+$CHROOT_CMD/ipacct_dynips.pl
 #	$TIME_MEASURE /usr/local/sbin/squid-mysql2ipacct 
-$TIME_MEASURE  /bin/cat | $BIN_PREFIX/ipacct2mysql.pl
+$IPACCTCTL ng0_ip_acct:ng0 checkpoint 
+$IPACCTCTL -ni ng0_ip_acct:ng0 show | $CHROOT_CMD/ipacct2mysql.pl
+$IPACCTCTL ng0_ip_acct:ng0 clear
+#$TIME_MEASURE  /bin/cat | $BIN_PREFIX/ipacct2mysql.pl
 #/tmp/ipacct/ipacct.10000 
 #/bin/cat /tmp/ipacct/ipacct.10001 |/usr/local/sbin/ipacct2mysql raw_out
-$TIME_MEASURE $BIN_PREFIX/ipacct_purge.pl
+$TIME_MEASURE $CHROOT_CMD/ipacct_purge.pl
 #$TIME_MEASURE  /sbin/ipfw show | $BIN_PREFIX/ipacct_limits
-$BIN_PREFIX/ipacct_dynips.pl
 #for min10 in 00 20 40 
 for min10 in 00 10 20 30 40 50
 #for min10 in 00 15 30 45
 do
-	[ $min -eq $min10 ] && $BIN_PREFIX/ipacct_10min.sh $min10&
+	[ $min -eq $min10 ] && $CHROOT_CMD/ipacct_10min.sh $min10&
 done

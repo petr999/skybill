@@ -50,7 +50,7 @@ use DBD::mysql;
 use Skybill::Config;
 
 
-our $dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";mysql_socket=".DB_SOCK,DB_USER,DB_PASS);
+our $dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";".DB_DSN_REST,DB_USER,DB_PASS);
 
 ### DAILY DETAILS
 our $clients_sth=$dbh->prepare( "select dest, src, sum( bytes ) as bytes from ".DB_CLIENTS_TABLE." 

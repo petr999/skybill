@@ -50,13 +50,14 @@ use DBI;
 use DBD::mysql;
 use Skybill::Config;
 
-our $dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";mysql_socket=".DB_SOCK,DB_USER,DB_PASS);
+our $dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";".DB_DSN_REST,DB_USER,DB_PASS);
 our $bytes_sum=0;
 
-our $sth=$dbh->prepare("INSERT INTO ".DB_RAW_TABLE."( src, src_port, dest, dest_port, proto, bytes, packets) VALUES(inet_aton( ? ),?,inet_aton( ? ),?,?,?,?)");
+our $sth=$dbh->prepare("INSERT INTO ".DB_RAW_TABLE."( src, src_port, dest, dest_port, proto, bytes, packets) VALUES( ?,?,?,?,?,?,?)");
 while(<STDIN>) {
     chomp;				# here we now get a string!
-my ( $src, $src_port, $dest, $dest_port, $proto, $bytes, $packets )=split(' ');
+my ( $src, $src_port, $dest, $dest_port, $proto, $packets, $bytes, )=split /\s+/, $_;
+  $proto = lc getprotobynumber $proto;
 	#	if(
 	#			(	grep( { $src eq $_ } @{( SERVERS_LIST )} )
 	#					and

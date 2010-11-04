@@ -121,7 +121,7 @@ sub page{
   l10n;
   $query=$q->Vars;
   filter_query( $query );
-  $dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";mysql_socket=".DB_SOCK,DB_USER,DB_PASS);
+  $dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";".DB_DSN_REST,DB_USER,DB_PASS);
   my $bill=get_bill( $query );
   $dbh->disconnect();
  

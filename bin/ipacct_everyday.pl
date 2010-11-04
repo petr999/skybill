@@ -51,7 +51,7 @@ use DBD::mysql;
 use Skybill::Config;
 
 
-our $dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";mysql_socket=".DB_SOCK,DB_USER,DB_PASS);
+our $dbh=DBI->connect("DBI:mysql:database=".DB_NAME.";".DB_DSN_REST,DB_USER,DB_PASS);
 our $sth=$dbh->prepare("delete from clients where ts<now()-interval ? second");
 $sth->execute(DB_CLISERV_KEEP);
 $sth=$dbh->prepare("delete from servers where ts<now()-interval ? second");

@@ -8,7 +8,7 @@ use base qw/Exporter/;
 
 
 our @EXPORT=qw/
-DB_USER DB_PASS DB_SOCK DB_NAME 
+DB_USER DB_PASS DB_DSN_REST DB_NAME 
 DB_RAW_TABLE DB_DAILY_TABLE DB_CLIENTS_TABLE DB_SERVERS_TABLE DB_DETAILS_TABLE
 DB_DETAILS_MONTHLY_TABLE DB_CLISERV_SUMMARY_TABLE DB_CLISERV_SUMMARY_DETAILS_TABLE DB_DESTSRC_SUMMARY_TABLE
 DB_RAW_KEEP
@@ -40,7 +40,8 @@ sub read_addresses{
 
 use constant DB_USER => 'database_user_name';			# MySQL user name
 use constant DB_PASS => 'database_pass_word';			# MySQL user pass
-use constant DB_SOCK => 'database_sock_ette';	# MySQL binded UNIX datagram socket
+#use constant DB_DSN_REST => 'mysql_socket=/path/to/your/mysql.sock';	# MySQL binded UNIX socket
+use constant DB_DSN_REST => 'host=your.mysql.host';	# MySQL binded TCP socket
 use constant DB_NAME => 'database_name';		# MySQL database
 use constant DB_RAW_TABLE => 'raw';		# MySQL table for raw data
 use constant DB_DAILY_TABLE => 'daily';		# MySQL table for overall daily acct
@@ -74,5 +75,6 @@ use constant MONTHLY_SRC_EXPIRE_BYTES_THRESHOLD=>1024*1024*1024;
 use constant MONTHLY_SRC_EXPIRE_MONTHS_THRESHOLD=>2;
 use constant BILLED_INTERFACE => 'your_inter_face0';
 use constant IF_ADDRESS_NUMBER => 'interface_address_number_from_0';
+use constant COUNTRY_CODE => ( defined( $ENV{COUNTRY_CODE} ) and ( 'ru' eq lc $ENV{COUNTRY_CODE} ) ) ? 'ru' : 'en';
 
 1;
