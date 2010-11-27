@@ -28,14 +28,14 @@ BILLED_INTERFACE IF_ADDRESS_NUMBER
 use Cwd qw/realpath getcwd/;
 
 sub read_addresses{
-	open( ADDRESSES , '<'.realpath( "$main::skybill_lib/../var" )."/addresses.txt" ) or die $!;
+	open( my $addresses , '<'.realpath( "$main::skybill_lib/../var" )."/addresses.txt" ) or die $!;
 	my @retval = ();
-	while( <ADDRESSES> ){
+	while( <$addresses> ){
 		chomp;
 		push @retval, $_;
 	}
 	return \@retval;
-	close ADDRESSES;
+	close $addresses;
 }
 
 use constant DB_USER => 'database_user_name';			# MySQL user name
