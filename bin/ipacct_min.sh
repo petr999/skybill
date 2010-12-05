@@ -11,11 +11,13 @@ date >>$IPACCT_MIN_LOG
 min=`date "+%M"`
 TIME_MEASURE="/usr/bin/time -h -ao $IPACCT_MIN_LOG "
 IPACCTCTL="$IPACCT_CHROOT_CMD /usr/local/sbin/ipacctctl"
+BILLED_INTERFACE="rl0"
+
 $CHROOT_CMD/ipacct_dynips.pl
 #	$TIME_MEASURE /usr/local/sbin/squid-mysql2ipacct 
-$IPACCTCTL ng0_ip_acct:ng0 checkpoint 
-$IPACCTCTL -ni ng0_ip_acct:ng0 show | $CHROOT_CMD/ipacct2mysql.pl
-$IPACCTCTL ng0_ip_acct:ng0 clear
+$IPACCTCTL ${BILLED_INTERFACE}_ip_acct:${BILLED_INTERFACE} checkpoint 
+$IPACCTCTL -ni ${BILLED_INTERFACE}_ip_acct:${BILLED_INTERFACE} show | $CHROOT_CMD/ipacct2mysql.pl
+$IPACCTCTL ${BILLED_INTERFACE}_ip_acct:${BILLED_INTERFACE} clear
 #$TIME_MEASURE  /bin/cat | $BIN_PREFIX/ipacct2mysql.pl
 #/tmp/ipacct/ipacct.10000 
 #/bin/cat /tmp/ipacct/ipacct.10001 |/usr/local/sbin/ipacct2mysql raw_out
