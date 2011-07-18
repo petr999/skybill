@@ -11,7 +11,7 @@ date >>$IPACCT_MIN_LOG
 min=`date "+%M"`
 TIME_MEASURE="/usr/bin/time -h -ao $IPACCT_MIN_LOG "
 IPACCTCTL="$IPACCT_CHROOT_CMD /usr/local/sbin/ipacctctl"
-BILLED_INTERFACE="rl0"
+BILLED_INTERFACE=`/usr/bin/perl -Mstrict -MCwd -wE 'our $skybill_lib; BEGIN{ $skybill_lib = Cwd::realpath( "'$CHROOT_PATH'"."/"."'$BIN_PREFIX'"."/../lib" ) } use lib $skybill_lib; use Skybill::Config; print BILLED_INTERFACE;'`
 
 $CHROOT_CMD/ipacct_dynips.pl
 #	$TIME_MEASURE /usr/local/sbin/squid-mysql2ipacct 
