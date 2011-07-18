@@ -250,7 +250,7 @@
 </xsl:template>
 <xsl:template name='ip-chart-row'>
 	<xsl:param name='max'>66000000</xsl:param>
-	<xsl:param name='with-whois'>0</xsl:param>
+	<xsl:param name='with-whois'>1</xsl:param>
 	<xsl:variable name='width'>50</xsl:variable>
 	<xsl:variable name='pict_name'>/img/blue.gif</xsl:variable>
 	<xsl:variable name='pict_over_name'>/img/blue-green.gif</xsl:variable>
@@ -277,7 +277,7 @@
 			</tr>
 </xsl:template>
 <xsl:template name='ip-anchor'>
-	<xsl:param name='with-whois'>0</xsl:param>
+	<xsl:param name='with-whois'>1</xsl:param>
 	<xsl:param name='ip'>0.0.0.0</xsl:param>
 	<xsl:variable name='whois-href'>
 		<xsl:call-template name='whois-url'>
@@ -930,6 +930,6 @@
 </xsl:template>
 <xsl:template name='whois-url'>
 	<xsl:param name='ip'></xsl:param>
-		http://who.is/whois-ip/ip-address/<xsl:value-of select='$ip'/>/
+		http://whois.domaintools.com/<xsl:value-of select='$ip'/>
 </xsl:template>
 </xsl:stylesheet>
