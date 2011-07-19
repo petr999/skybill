@@ -134,7 +134,7 @@ $sth=$dbh->prepare( "insert into ".DB_CLISERV_SUMMARY_DETAILS_TABLE."
 	" );
 while( (my $addr, my $hrow_ref) =each( %$hr ) ){
 	my( $acct, $proto, $ports_bytes, $day, $rate_type, $port, $addr ) = values %$hrow_ref;
-	#print %$hrow_ref;
+	# print "clients: ". join ':', %$hrow_ref; print "\n";
 	$sth->execute( $day, 'clients', $addr, $proto, $port, $acct, $ports_bytes);
 }
 $sth=$dbh->prepare( "commit" );
@@ -145,7 +145,7 @@ $sth->execute() or die $dbh->errstr;
 $sth=$dbh->prepare( "delete from ".DB_CLISERV_SUMMARY_DETAILS_TABLE." where day=date( now() ) and rate_type='servers'" );
 $sth->execute() or die $dbh->errstr;
 $sth=$dbh->prepare( "select date_format(now(), '%Y/%m/%d' ) as day, 
-												'servers' as rate_type, dest as addr, 
+								'servers' as rate_type, dest as addr, 
 								sum(bytes) as acct from ".DB_SERVERS_TABLE."
 								where ts between date_format( now(), '%Y/%m/%d')
 								and date_format( now() + interval 1 day, '%Y/%m/%d')
@@ -184,7 +184,9 @@ for( my $i = 0; ( $i < $addr_count ) or ( $i < $ports_count ); $i ++ ){
 		}
 	} else {
 	  if(  defined $hrow_ports_ref  ){
-			my $day = [ localtime ]; $day = join '/', map { $day->[ $_ ];  } ( 5..3 ) ;
+			my $day = [ localtime ];
+            my $year = $$day[5] + 1900;
+            $day = join '/', $year, map { $day->[ $_ ];  } reverse ( 3..4 );
 			$hrow_ref = { acct => 0, day => $day, rate_type => 'servers', addr => 0, };
 			$$hrow_ref{port}=$$hrow_ports_ref{port};
 			$$hrow_ref{proto}=$$hrow_ports_ref{proto};
@@ -216,8 +218,8 @@ $sth=$dbh->prepare( $sql );
 while( (my $addr, my $hrow_ref) =each( %$hr ) ){
 	my( $acct, $proto, $ports_bytes, $day, $rate_type, $port, $addr ) = map { $hrow_ref->{ $_ } }
 			qw/acct proto ports_acct day rate_type port addr/
-;
-#print "DAY: $day\n";
+	;
+	# print join ':', %$hrow_ref; print "\n";
 	$sth->execute( $day, $rate_type, $addr, $proto, $port, $acct, $ports_bytes);
 }
 $sth=$dbh->prepare( "commit" );
